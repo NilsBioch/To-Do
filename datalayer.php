@@ -48,11 +48,11 @@ function createNewList($data){
 }
 
 function updateList($conn, $currentListId, $data){
-    $stmt = $conn->prepare("UPDATE list  SET name=':name', description=':description', WHERE id=':currentListId'");
+    $stmt = $conn->prepare("UPDATE list  SET name=':name', description=':description', WHERE id=5");
     $stmt->execute(array(
         ':name' => $data['name'],
         ':description' => $data['description'],   
-        ':currentListId' => $currentListId,   
+        ':currentListId' => $currentListId
     ));
     header("Location: index.php"); 
 }
