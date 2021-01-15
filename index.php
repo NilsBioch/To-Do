@@ -2,6 +2,7 @@
 include 'datalayer.php'; 
 $conn = connectie();
 $result = fetchAllLists($conn);
+$tasks = fetchListTasks($conn);
 include 'header.php';
 ?>
 
@@ -21,9 +22,11 @@ include 'header.php';
         echo"    <p class='card-text'>".$data['description']."</p>";
         echo"  </div>";
         echo"  <ul class='list-group list-group-flush'>";
-        // echo"    <li class='list-group-item'>Cras justo odio</li>";
-        // echo"    <li class='list-group-item'>Dapibus ac facilisis in</li>";
-        // echo"    <li class='list-group-item'>Vestibulum at eros</li>";
+        foreach ($tasks as $task) {
+            if ($task['list_id'] == $data['id']) {
+                echo"    <li class='list-group-item'>".$task['name']."</li>";
+            }
+        }
         echo"  </ul>";
         echo"  <div class='card-body'>";
         echo"    <a href='updateList.php?id=" .$data['id']. "' class='card-link'>Edit List</a>";

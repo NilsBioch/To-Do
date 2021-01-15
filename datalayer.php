@@ -2,7 +2,7 @@
 function connectie(){
     $servername = "localhost";
     $username = "root";
-    $password = "99055617";
+    $password = "";
     $dbname = "To-Do";
     $conn;
     try {
@@ -15,8 +15,6 @@ function connectie(){
         echo "Error: " . $e->getMessage();
     }
 }
-// connectie
-// $name, $img, $color, $weight, $price, $description, $typeId
 
 function fetchAllLists($conn){
     $result;
@@ -34,6 +32,14 @@ function fetchAllStatus($conn){
         return $status;
 }
 
+function fetchListTasks($conn){
+    $status;
+    $stmt = $conn->prepare("SELECT * FROM task");
+        $stmt->execute();
+        $status = $stmt->fetchAll();
+        return $status;
+}
+
 function createList($conn, $data){
        $stmt = $conn->prepare("INSERT INTO list (name, description) VALUES (:name , :description)");
        $stmt->execute(array(
@@ -42,24 +48,26 @@ function createList($conn, $data){
     ));
        header("Location: index.php");    
 }
-function createTask($cListId){
-//     $stmt = $conn->prepare("INSERT INTO task (list_id, name, description, time, status_id) VALUES (:currentListId, :name , :description, :time, :status)");
-//     $stmt->execute(array(
-//      ':name' => $data['name'],
-//      ':description' => $data['description'],
-//      ':time' => $data['time'],
-//      ':status' => $data['status'],
-//      ':currentListId' => $currentListId,
-//  ));
-//     header("Location: index.php"); 
-echo $cListId;
+
+function createTask($conn, $currentListId, $data){
+    $stmt = $conn->prepare("INSERT INTO task (name, description, status_id, duration, list_id) VALUES (:name , :description, :status_id, :duration, :list_id)");
+    $stmt->execute(array(
+     ':name' => $data['name'],
+     ':description' => $data['description'],
+     ':status_id' => $data['status'],
+     ':duration' => $data['duration'],
+     ':list_id' => $currentListId,
+
+ ));
+    header("Location: index.php");    
 }
+
 function updateList($conn, $currentListId, $data){
     $stmt = $conn->prepare("UPDATE list  SET name=:name, description=:description WHERE id=:currentListId");
     $stmt->execute(array(
         ':name' => $data['name'],
         ':description' => $data['description'],   
-        ':currentListId' => $currentListId
+        ':currentListId' => $currentListId,   
     ));
     header("Location: index.php"); 
 }
