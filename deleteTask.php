@@ -1,11 +1,10 @@
 <?php 
 include'datalayer.php'; 
 $conn = connectie();
-$result = fetchAllLists($conn);
 
-$currentListId = $_GET['id'];
+$currentTaskId = $_GET['id'];
 
-    $stmt = $conn->prepare("SELECT * FROM list WHERE id = $currentListId");
+    $stmt = $conn->prepare("SELECT * FROM task WHERE id = $currentTaskId");
     $stmt->execute();
     $data = $stmt->fetch();
 
@@ -17,7 +16,7 @@ $currentListId = $_GET['id'];
             <input class="btn-lg btn-primary text-white m-3" type="submit" value="Ja!">
                 <?php 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        deleteList($conn, $currentListId);
+                        deleteTask($conn, $currentTaskId);
                     }
                 ?>
         </form> 

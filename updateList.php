@@ -7,34 +7,28 @@ $currentListId = $_GET['id'];
     $stmt->execute();
     $data = $stmt->fetch();
     
-    include 'header.php';
+    include 'assets/header.php';
 ?>
-
-<body>
-
 <div class="mb-5 mt-2">
 
-    <h1>Wijzig de List gegevens</h1>
+    <h1>Edit list</h1>
     <?php 
-    $nameErr=''; 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["name"]) or empty($_POST["description"]) ) {
-          $nameErr = "Veld is verplicht";
-        } else {
-          test_input($_POST["name"]);
-          test_input($_POST["description"]);
-          updateList($conn, $currentListId, $_POST);
-        }
-    } ?>
-    <form method='post'>
+      editList($conn, $currentListId, $_POST);
+    }
+    ?>
 
-    Naam:<br><input type="text" name="name" value="<?php echo $data['name'] ?>"><span class="error">* <?php echo $nameErr;?></span></br>
-    Description:<br><input type="text" name="description" value="<?php echo $data['description'] ?>"><span class="error">* <?php echo $nameErr;?></span></br>
-  <input class="btn-lg btn-primary text-white " type="submit" value="Update">
+</div>
+<div id='input-box' class="text-center fixed-bottom">
+  <div id="list-form">
+    <form method='post'>
+      <div class="form-group list-form">
+        <h3 class='text-white'>Naam:</h3>
+        <input class="form-control" type="text" name="name" value="<?php echo $data['name'] ?>" required>
+        <input class="btn-lg btn-primary text-white m-2" type="submit" value="Maak aan!">
+      </div>
     </form>
+  </div>
 </div>
 
-<?php include'header_footer/footer.php' ?>
-
-</body>
-</html>
+<?php include 'assets/footer.php' ?>

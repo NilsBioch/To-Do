@@ -3,27 +3,29 @@ include'datalayer.php';
 $conn = connectie();
 $result = fetchAllStatus($conn);
 
-$currentListId = $_GET['id'];
-    
+$currentTaskId = $_GET['id'];
+$stmt = $conn->prepare("SELECT * FROM task WHERE id = $currentTaskId");
+$stmt->execute();
+$data = $stmt->fetch();
     include 'assets/header.php';
 ?>
   <div class="mb-5 mt-2">
-    <h1>Add new Task</h1>
+    <h1>Edit Task</h1>
     <?php 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          createTask($conn, $currentListId, $_POST);
+          editTask($conn, $currentTaskId, $_POST);
         }
-   ?>
-<div id='input-box' class="text-center fixed-bottom">
+     ?>
+   <div id='input-box' class="text-center fixed-bottom">
   <div id="list-form">
     <form method='post'>
       <div class="form-group list-form">
         <h3 class='text-white'>Naam:</h3>
-        <input class='form-control' type="text" name="name" required>
+        <input class='form-control' type='text' name='name' value="<?php echo $data['name'] ?>" required>
         <h3 class='text-white'>Description:</h3>
-        <input class='form-control' type="textaera" name="description"required></br>
+        <input class='form-control' type="textaera" name='description' value="<?php echo $data['description'] ?>" required></br>
         <h3 class='text-white'>Duration:</h3>
-        <input class='form-control' type="number" name="duration" required></br>
+        <input class='form-control' type="number" name="duration" value="<?php echo $data['duration'] ?>" required></br>
         <h3 class='text-white'>Status:</h3>
         <select class='form-control' id="status" name="status">
         <?php
@@ -38,4 +40,4 @@ $currentListId = $_GET['id'];
   </div>
 </div>
 
-<?php  include 'assets/footer.php' ?>
+<?php include 'assets/footer.php' ?>

@@ -1,3 +1,30 @@
 body{
-    background-color: gray;
+    background-image: url('images/space.png');
+}
+#input-box{
+    background-color: rgba(220, 220, 221, 0.452);
+    height: 34em;
+}
+#list-form{
+    margin-top:2%;
+    margin-left:34% ;
+    width: 40em;
+}
+#list-box{
+    margin:2em;
+    background-color: rgba(220, 220, 221, 0.452);
+}
+#list{
+    background: rgba(20, 27, 46, 0.9);
+}
+#list-item{
+    background: rgba(15, 20, 34, 0.575);
+}
+
+.fa-edit, .fa-trash{
+float: right;
+}
+.fa-edit{
+    margin-right:0.5em;
+
 }

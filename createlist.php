@@ -1,34 +1,28 @@
-<?php 
+
+	<?php 
 include 'datalayer.php'; 
 $conn = connectie();
-
-fetchAllLists($conn);
-include 'header.php';
+$result = fetchAllLists($conn);
+$tasks = fetchListTasks($conn);
+include 'assets/header.php';
 ?>
+	<h1>Add new list</h1>
+	<?php 
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			createList($conn, $_POST);
+		}
+  ?>
+<div id='input-box' class="text-center fixed-bottom">
+  <div id="list-form">
+    <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
+      <div class="form-group list-form">
+        <h3 class='text-white'>Naam:</h3>
+        <input class="form-control" type="text" name="name"
+          value="<?php if(isset($_POST['name'])){echo $_POST['name'];}; ?>" required>
+        <input class="btn-lg btn-primary text-white m-2" type="submit" value="Maak aan!">
+      </div>
+    </form>
+  </div>
+</div>
 
-<body>
-	<div class="mb-5 mt-2 ">
-		<h1>Add new list</h1>
-		<?php 
-    		$nameErr ='';
-			if ($_SERVER["REQUEST_METHOD"] == "POST") {
-				if (empty($_POST["name"]) or empty($_POST["description"])) {
-				$nameErr = "Veld is verplicht";
-				} else {
-				createList($conn, $_POST);
-				}
-			}
-    	?>
-		<form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
-			Naam:<br><input type="text" name="name" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}; ?>">
-			<span class="error">* <?php echo $nameErr;?></span></br>
-			Description:<br><input type="textarea" name="description"
-				value="<?php if(isset($_POST['description'])){echo $_POST['description'];}; ?>">
-			<span class="error">* <?php echo $nameErr;?></span></br>
-			<br>
-			<input class="btn-lg btn-primary text-white " type="submit" value="Maak aan!">
-		</form>
-	</div>
-	<?php include 'header_footer/footer.php' ?>
-</body>
-</html>
+<?php  include 'assets/footer.php' ?>
