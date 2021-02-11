@@ -17,10 +17,11 @@ include 'assets/header.php';
     for ($i=0; $i < count($result); $i++) { 
         $data = $result[$i];
         echo" <div id='list' class='card mt-2 text-white d-inline-flex'>";
-        echo"    <h5 class='card-header'>".$data['name']."</h5>";
+        echo"    <h5 class='card-header'>".$data['name']."</h5> <i class=' card-header far fa-clock'></i> ";
         echo"  <div class='card-body'>";
         echo"  <ul class='list-group list-group-flush'>";
-        foreach ($tasks as $task) {
+        $taskItem = fetchCurrentTask($conn, $data['id']);
+        foreach ($taskItem as $task) {
             if ($task['list_id'] == $data['id']) {
                 $status = fetchCurrentStatus($conn, $task);
                 echo"<li id='list-item' class='text-white list-group-item'>";
