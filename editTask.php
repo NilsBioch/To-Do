@@ -10,7 +10,10 @@ $data = $stmt->fetch();
     include 'assets/header.php';
 ?>
   <div class="mb-5 mt-2">
-    <h1>Edit Task</h1>
+    <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
+      <h1 class='text-white'>Edit Task</h1>
+      <a class='align-self-center' href='index.php'><i class='fas fa-arrow-circle-left fa-3x justify-content-between'></i></a>
+    </div>
     <?php 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
           editTask($conn, $currentTaskId, $_POST);
@@ -34,7 +37,7 @@ $data = $stmt->fetch();
           }
         ?>
       </select><br>
-        <input class="btn-lg btn-primary text-white m-2" type="submit" value="Maak aan!">
+        <input class="btn-lg btn-primary text-white m-2" type="submit" value="Edit Task!">
       </div>
     </form>
   </div>

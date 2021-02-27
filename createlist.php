@@ -6,7 +6,11 @@ $result = fetchAllLists($conn);
 $tasks = fetchListTasks($conn);
 include 'assets/header.php';
 ?>
-	<h1>Add new list</h1>
+  <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
+    <h1 class='text-white'>Add new list</h1>
+    <a class='align-self-center' href='index.php'><i class='fas fa-arrow-circle-left fa-3x justify-content-between'></i></a>
+  </div>
+
 	<?php 
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			createList($conn, $_POST);

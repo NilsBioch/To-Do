@@ -20,7 +20,9 @@ body{
 #list-item{
     background: rgba(15, 20, 34, 0.575);
 }
-
+.fa-plus-circle, .fa-arrow-circle-left{
+    margin-right:1em;
+}
 .fa-edit, .fa-trash{
 float: right;
 }

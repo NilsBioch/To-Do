@@ -17,7 +17,6 @@ function connectie(){
 }
 
 function fetchAllLists($conn){
-    $result;
     $stmt = $conn->prepare("SELECT * FROM list");
     $stmt->execute();
     $result = $stmt->fetchAll();
@@ -25,7 +24,6 @@ function fetchAllLists($conn){
 }
 
 function fetchAllStatus($conn){
-    $status;
     $stmt = $conn->prepare("SELECT * FROM status");
     $stmt->execute();
     $status = $stmt->fetchAll();
@@ -33,29 +31,26 @@ function fetchAllStatus($conn){
 }
 
 function fetchListTasks($conn){
-    $status;
     $stmt = $conn->prepare("SELECT * FROM task");
     $stmt->execute();
     $status = $stmt->fetchAll();
     return $status;
 }
 
-function fetchCurrentList($conn){
-    $status;
-    $stmt = $conn->prepare("SELECT * FROM list WHERE id = ");
-    $stmt->execute();
-    $status = $stmt->fetchAll();
-    return $status;
-}
-
 function fetchCurrentTask($conn, $currentListId){
-    $currentTasks;
     $stmt = $conn->prepare("SELECT * FROM task WHERE list_id = $currentListId");
     $stmt->execute();
     $currentTasks = $stmt->fetchAll();
     return $currentTasks;
 }
 
+function sortTasksTime($conn, $currentListId){
+    $stmt = $conn->prepare("SELECT * FROM task WHERE list_id = $currentListId ORDER BY `task`.`duration` ASC");
+    $stmt->execute();
+    $currentTasks = $stmt->fetchAll();
+    return $currentTasks;
+    
+}
 function fetchCurrentStatus($conn, $task){
     $status;
     $stmt = $conn->prepare("SELECT * FROM status WHERE id = :status_id");

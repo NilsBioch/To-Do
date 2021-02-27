@@ -10,14 +10,15 @@ include 'assets/header.php';
 <div class='mb-5 mt-2'>
     <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
         <h1 class='text-white'>Bekijk hier alle Lists</h1>
-        <a class='btn-lg btn-primary text-white align-self-center' href='createList.php'>Nieuwe List</a>
+        <a class='align-self-center' href='createList.php'><i class='fas fa-plus-circle fa-3x justify-content-between'></i></a>
     </div>
     <?php
 
     for ($i=0; $i < count($result); $i++) { 
         $data = $result[$i];
         echo" <div id='list' class='card mt-2 text-white d-inline-flex'>";
-        echo"    <h5 class='card-header'>".$data['name']."</h5> <i class=' card-header far fa-clock'></i> ";
+        echo"    <h5 class='card-header'>".$data['name']."</h5> <i class=' card-header far fa-clock'></i><i class='card-header fas fa-info-circle'></i> ";
+
         echo"  <div class='card-body'>";
         echo"  <ul class='list-group list-group-flush'>";
         $taskItem = fetchCurrentTask($conn, $data['id']);
@@ -35,14 +36,14 @@ include 'assets/header.php';
 
             }
         }
-        echo"  </ul>";
-        echo"  <div class='card-body'>";
-        echo"    <a href='updateList.php?id=" .$data['id']. "' class='card-link'>Edit List</a>";
-        echo"    <a href='deleteList.php?id=" .$data['id']. "' class='card-link'>Delete List</a>";
-        echo"    <a href='createTask.php?id=" .$data['id']. "' class='card-link'>Add Task</a>";
-        echo"  </div>";
-        echo"  </div>";
-        echo" </div>";
+        echo"</ul>";
+        echo"<div class='card-body'>";
+        echo"<a href='editList.php?id=" .$data['id']. "' class='card-link'>Edit List</a>";
+        echo"<a href='deleteList.php?id=" .$data['id']. "' class='card-link'>Delete List</a>";
+        echo"<a href='createTask.php?id=" .$data['id']. "' class='card-link'>Add Task</a>";
+        echo"</div>";
+        echo"</div>";
+        echo"</div>";
     }
     ?>
 </div>
