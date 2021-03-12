@@ -19,10 +19,10 @@ function connection(){
 /**
  * Fetches all lists
  *
- * You can find this function in, index.php
+ * Location: index.php
  * 
  * @param [type] $conn connects to database, to give acces.
- * @return mixed -Returns all lists
+ * @return [mixed] -Returns all lists
  */
 function fetchAllLists($conn){
     $stmt = $conn->prepare("SELECT * FROM list");
@@ -34,10 +34,10 @@ function fetchAllLists($conn){
 /**
  * Fetches all statuses
  *
- * You can find this function in index.php, editTask.php
+ * Location: index.php, editTask.php, createTask.php
  * 
  * @param [type] $conn -connects to database, to give acces.
- * @return mixed -Returns all statuses
+ * @return [mixed] -Returns all statuses
  */
 function fetchAllStatus($conn){
     $stmt = $conn->prepare("SELECT * FROM status");
@@ -49,10 +49,10 @@ function fetchAllStatus($conn){
 /**
  * Fetches all tasks
  *
- * You can find this function in index.php 
+ * Location: index.php 
  * 
  * @param [type] $conn -connects to database, to give acces.
- * @return mixed -Returns all tasks
+ * @return [mixed] -Returns all tasks
  */
 function fetchAllTasks($conn){
     $stmt = $conn->prepare("SELECT * FROM task");
@@ -62,13 +62,13 @@ function fetchAllTasks($conn){
 }
 
 /**
- * Fetches the current tasks
+ * Fetches the tasks in the current list
  *
- * You can find this function in index.php 
+ * Location: index.php 
  * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentListId -The id of the current list
- * @return mixed -Returns
+ * @return [mixed] -Returns the tasks in the current list 
  */
 function fetchCurrentTasks($conn, $currentListId){
     $stmt = $conn->prepare("SELECT * FROM task WHERE list_id = $currentListId");
@@ -80,11 +80,11 @@ function fetchCurrentTasks($conn, $currentListId){
 /**
  * Fetches the current list that you want to edit.
  *
- * You can find this function in editList.php
+ * Location: editList.php, deleteList.php
  * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentListId -The id of the current list
- * @return void
+ * @return [mixed] -Returns the current list
  */
 function fetchCurrentList($conn, $currentListId){    
     $stmt = $conn->prepare("SELECT * FROM list WHERE id = $currentListId");
@@ -96,11 +96,11 @@ function fetchCurrentList($conn, $currentListId){
 /**
  * Fetches the current task that you want to edit.
  *
- * You can find this function in editTask.php
+ * Location: index.php, editTask.php, deleteTask
  * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentTaskId -The id of the current task
- * @return void
+ * @return [mixed] -Returns the current task
  */
 function fetchCurrentTask($conn, $currentTaskId){
     $stmt = $conn->prepare("SELECT * FROM task WHERE id = $currentTaskId");
@@ -114,7 +114,7 @@ function fetchCurrentTask($conn, $currentTaskId){
  *
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentListId -The id of the current list
- * @return void
+ * @return [mixed] -Returns the sorted tasks
  */
 function sortTasksTime($conn, $currentListId){
     $stmt = $conn->prepare("SELECT * FROM task WHERE list_id = $currentListId ORDER BY `task`.`duration` ASC");
@@ -126,11 +126,11 @@ function sortTasksTime($conn, $currentListId){
 /**
  * Fetches the current status for a task
  *
- * You can find this function in index.php 
+ * Location: index.php 
  * 
  * @param [type] $conn -connects to database, to give acces.
- * @param [type] $task
- * @return void
+ * @param [number] $task -The id of the status in the task table
+ * @return [mixed] -Returns the current status
  */
 function fetchCurrentStatus($conn, $task){
     $status;
@@ -145,9 +145,10 @@ function fetchCurrentStatus($conn, $task){
 /**
  * Creates a list 
  *
+ * Location: createList.php
+ * 
  * @param [type] $conn -connects to database, to give acces.
- * @param [type] $data
- * @return void
+ * @param [string] $data -The name of list
  */
 function createList($conn, $data){
     $stmt = $conn->prepare("INSERT INTO list (name) VALUES (:name )");
@@ -160,10 +161,11 @@ function createList($conn, $data){
 /**
  * Creates a task in a list
  *
+ * Location: createTask.php
+ * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentListId -The id of the current list
- * @param [type] $data
- * @return void
+ * @param [mixed] $data -The input of the user
  */
 function createTask($conn, $currentListId, $data){
     $stmt = $conn->prepare("INSERT INTO task (name, description, status_id, duration, list_id) VALUES (:name , :description, :status_id, :duration, :list_id)");
@@ -180,10 +182,11 @@ function createTask($conn, $currentListId, $data){
 /**
  * Edits the list
  *
+ * Location: editList.php
+ * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentListId -The id of the current list
- * @param [type] $data
- * @return void
+ * @param [string] $data -The name of the list
  */
 function editList($conn, $currentListId, $data){
     $stmt = $conn->prepare("UPDATE list  SET name=:name WHERE id=:currentListId");
@@ -197,12 +200,11 @@ function editList($conn, $currentListId, $data){
 /**
  * Edits the task
  *
- * You can find this function in editTask.php
+ * Location: editTask.php
  * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentTaskId -The id of the current task
- * @param [type] $data
- * @return void
+ * @param [mixed] $data -The input of the user.
  */
 function editTask($conn, $currentTaskId, $data){
     $stmt = $conn->prepare("UPDATE task  SET name=:name, description=:description, status_id=:status_id, duration=:duration WHERE id=:currentTaskId");
@@ -219,9 +221,10 @@ function editTask($conn, $currentTaskId, $data){
 /**
  * Deletes the list and all the tasks in the list
  *
+ * Location: deleteList.php
+ * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentListId -The id of the current list
- * @return void
  */
 function deleteList($conn, $currentListId){
     $stmt = $conn->prepare("DELETE FROM list WHERE id='$currentListId'; DELETE FROM task WHERE list_id='$currentListId';");
@@ -232,9 +235,10 @@ function deleteList($conn, $currentListId){
 /**
  * Deletes task
  *
+ * Location: deleteTask.php
+ * 
  * @param [type] $conn -connects to database, to give acces.
  * @param [number] $currentTaskId -The id of the current task
- * @return void
  */
 function deleteTask($conn, $currentTaskId){
     $stmt = $conn->prepare("DELETE FROM task WHERE id='$currentTaskId'");
@@ -243,4 +247,3 @@ function deleteTask($conn, $currentTaskId){
 }
 
 
-?>

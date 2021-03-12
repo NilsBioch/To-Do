@@ -3,7 +3,7 @@ include 'datalayer.php';
 include 'assets/header.php';
 $currentListId = $_GET['id'];
 $conn = connection();
-$result = fetchAllStatus($conn);
+$statuses = fetchAllStatus($conn);
 
 ?>
 <div class="mb-5 mt-2">
@@ -29,8 +29,8 @@ $result = fetchAllStatus($conn);
 				<h3 class='text-white'>Status:</h3>
 				<select class='form-control' id="status" name="status">
 					<?php
-						foreach($result as $data){
-							echo"<option value='".$data["id"]."'>".$data['name']."</option>";
+						foreach($statuses as $status){
+							echo"<option value='".$status["id"]."'>".$status['name']."</option>";
 						}
 					?>
       			</select><br>

@@ -4,7 +4,6 @@
     $conn = connection();
     $list = fetchAllLists($conn);
     $tasks = fetchAllTasks($conn);
-    $status = fetchAllStatus($conn);
 ?>
 <div class='mb-5 mt-2'>
     <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
