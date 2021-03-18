@@ -1,21 +1,21 @@
 <?php 
-  include 'assets/header.php';
-  include 'datalayer.php'; 
-  $currentTaskId = $_GET['id'];
-  $conn = connection();
-  $statuses = fetchAllStatus($conn);
-  $task = fetchCurrentTask($conn, $currentTaskId);
+include 'datalayer.php'; 
+$currentTaskId = $_GET['id'];
+$conn = connection();
+$statuses = fetchAllStatus($conn);
+$task = fetchCurrentTask($conn, $currentTaskId);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    editTask($conn, $currentTaskId, $_POST);
+    header("Location: index.php");
+    exit();
+}
+include 'assets/header.php';
 ?>
 <div class="mb-5 mt-2">
     <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
         <h1 class='text-white'>Edit Task</h1>
         <a class='align-self-center' href='index.php'><i class='fas fa-arrow-circle-left fa-3x justify-content-between'></i></a>
     </div>
-    <?php 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            editTask($conn, $currentTaskId, $_POST);
-        }
-    ?>
     <div id='input-box' class="text-center fixed-bottom">
         <div id="list-form">
             <form method='post'>

@@ -1,9 +1,14 @@
 <?php 
-    include 'assets/header.php';
-    include 'datalayer.php'; 
-    $currentListId = $_GET['id'];
-    $conn = connection();
-    $list = fetchCurrentList($conn, $currentListId);
+include 'datalayer.php'; 
+$currentListId = $_GET['id'];
+$conn = connection();
+$list = fetchCurrentList($conn, $currentListId);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    editList($conn, $currentListId, $_POST);
+    header("Location: index.php");
+    exit();
+}
+include 'assets/header.php';
 ?>
 <div class="mb-5 mt-2">
     <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
@@ -11,9 +16,7 @@
         <a class='align-self-center' href='index.php'><i class='fas fa-arrow-circle-left fa-3x justify-content-between'></i></a>
     </div>
     <?php 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            editList($conn, $currentListId, $_POST);
-        }
+
     ?>
 </div>
 <div id='input-box' class="text-center fixed-bottom">

@@ -18,7 +18,8 @@ body{
     background: rgba(20, 27, 46, 0.9);
 }
 #list-item{
-    background: rgba(15, 20, 34, 0.575); ;
+    background: rgba(15, 20, 34, 0.575); 
+    max-width: 20em;
 }
 .fa-plus-circle, .fa-arrow-circle-left{
     margin-right:1em;

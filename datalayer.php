@@ -71,8 +71,8 @@ function fetchAllTasks($conn){
  * @return [mixed] -Returns the tasks in the current list 
  */
 function fetchCurrentTasks($conn, $currentListId){
-    $stmt = $conn->prepare("SELECT * FROM task WHERE list_id = $currentListId");
-    $stmt->execute();
+    $stmt = $conn->prepare("SELECT * FROM task WHERE list_id =:currentListId");
+    $stmt->execute(array( ':currentListId' => $currentListId ));
     $status = $stmt->fetchAll();
     return $status;
 }
@@ -87,8 +87,8 @@ function fetchCurrentTasks($conn, $currentListId){
  * @return [mixed] -Returns the current list
  */
 function fetchCurrentList($conn, $currentListId){    
-    $stmt = $conn->prepare("SELECT * FROM list WHERE id = $currentListId");
-    $stmt->execute();
+    $stmt = $conn->prepare("SELECT * FROM list WHERE id =:currentListId");
+    $stmt->execute(array( ':currentListId' => $currentListId ));
     $status = $stmt->fetch();
     return $status;
 }
@@ -103,8 +103,8 @@ function fetchCurrentList($conn, $currentListId){
  * @return [mixed] -Returns the current task
  */
 function fetchCurrentTask($conn, $currentTaskId){
-    $stmt = $conn->prepare("SELECT * FROM task WHERE id = $currentTaskId");
-    $stmt->execute();
+    $stmt = $conn->prepare("SELECT * FROM task WHERE id =:currentTaskId");
+    $stmt->execute(array( ':currentTaskId' => $currentTaskId ));
     $status = $stmt->fetch();
     return $status;
 }
@@ -116,13 +116,18 @@ function fetchCurrentTask($conn, $currentTaskId){
  * @param [number] $currentListId -The id of the current list
  * @return [mixed] -Returns the sorted tasks
  */
-function sortTasksTime($conn, $currentListId){
-    $stmt = $conn->prepare("SELECT * FROM task WHERE list_id = $currentListId ORDER BY `task`.`duration` ASC");
-    $stmt->execute();
+function sortTasksTime($conn, $currentListId, $ascdesc){
+    $stmt = $conn->prepare("SELECT * FROM task WHERE list_id =:currentListId ORDER BY `task`.`duration` ASC");
+    $stmt->execute(array( ':currentListId' => $currentListId ));
     $status = $stmt->fetchAll();
     return $status;
 }
-
+function sortStatus($conn, $currentListId){
+    $stmt = $conn->prepare("SELECT * FROM `task` WHERE list_id =:currentListId ORDER BY `task`.`status_id` ASC");
+    $stmt->execute(array( ':currentListId' => $currentListId ));
+    $status = $stmt->fetchAll();
+    return $status;
+}
 /**
  * Fetches the current status for a task
  *
@@ -133,11 +138,8 @@ function sortTasksTime($conn, $currentListId){
  * @return [mixed] -Returns the current status
  */
 function fetchCurrentStatus($conn, $task){
-    $status;
-    $stmt = $conn->prepare("SELECT * FROM status WHERE id = :status_id");
-    $stmt->execute(array(
-        ':status_id' => $task['status_id'], 
-    ));
+    $stmt = $conn->prepare("SELECT * FROM status WHERE id =:status_id");
+    $stmt->execute(array( ':status_id' => $task['status_id'] ));
     $status = $stmt->fetch();
     return $status;
 }
@@ -152,10 +154,7 @@ function fetchCurrentStatus($conn, $task){
  */
 function createList($conn, $data){
     $stmt = $conn->prepare("INSERT INTO list (name) VALUES (:name )");
-    $stmt->execute(array(
-        ':name' => $data['name'],
-    ));
-    header("Location: index.php");    
+    $stmt->execute(array( ':name' => $data['name'] ));  
 }
 
 /**
@@ -170,13 +169,7 @@ function createList($conn, $data){
 function createTask($conn, $currentListId, $data){
     $stmt = $conn->prepare("INSERT INTO task (name, description, status_id, duration, list_id) VALUES (:name , :description, :status_id, :duration, :list_id)");
     $stmt->execute(array(
-    ':name' => $data['name'],
-    ':description' => $data['description'],
-    ':status_id' => $data['status'],
-    ':duration' => $data['duration'],
-    ':list_id' => $currentListId,
- ));
-    header("Location: index.php");    
+    ':name' => $data['name'], ':description' => $data['description'], ':status_id' => $data['status'], ':duration' => $data['duration'], ':list_id' => $currentListId ));   
 }
 
 /**
@@ -190,11 +183,7 @@ function createTask($conn, $currentListId, $data){
  */
 function editList($conn, $currentListId, $data){
     $stmt = $conn->prepare("UPDATE list  SET name=:name WHERE id=:currentListId");
-    $stmt->execute(array(
-        ':name' => $data['name'],
-        ':currentListId' => $currentListId,   
-    ));
-    header("Location: index.php"); 
+    $stmt->execute(array( ':name' => $data['name'], ':currentListId' => $currentListId ));
 }
 
 /**
@@ -208,14 +197,7 @@ function editList($conn, $currentListId, $data){
  */
 function editTask($conn, $currentTaskId, $data){
     $stmt = $conn->prepare("UPDATE task  SET name=:name, description=:description, status_id=:status_id, duration=:duration WHERE id=:currentTaskId");
-    $stmt->execute(array(
-        ':name' => $data['name'],
-        ':description' => $data['description'],
-        ':duration' => $data['duration'],
-        ':status_id' => $data['status'],
-        ':currentTaskId' => $currentTaskId,   
-    ));
-    header("Location: index.php"); 
+    $stmt->execute(array( ':name' => $data['name'], ':description' => $data['description'], ':duration' => $data['duration'], ':status_id' => $data['status'], ':currentTaskId' => $currentTaskId ));
 }
 
 /**
@@ -227,9 +209,8 @@ function editTask($conn, $currentTaskId, $data){
  * @param [number] $currentListId -The id of the current list
  */
 function deleteList($conn, $currentListId){
-    $stmt = $conn->prepare("DELETE FROM list WHERE id='$currentListId'; DELETE FROM task WHERE list_id='$currentListId';");
-    $stmt->execute();  
-    header("Location: index.php");
+    $stmt = $conn->prepare("DELETE FROM list WHERE id=:currentListId; DELETE FROM task WHERE list_id=:currentListId;");
+    $stmt->execute(array( ':currentListId' => $currentListId ));  
 }
 
 /**
@@ -241,9 +222,8 @@ function deleteList($conn, $currentListId){
  * @param [number] $currentTaskId -The id of the current task
  */
 function deleteTask($conn, $currentTaskId){
-    $stmt = $conn->prepare("DELETE FROM task WHERE id='$currentTaskId'");
-    $stmt->execute();  
-    header("Location: index.php");
+    $stmt = $conn->prepare("DELETE FROM task WHERE id=:currentTaskId");
+    $stmt->execute(array( ':currentTaskId' => $currentTaskId ));  
 }
 
 
