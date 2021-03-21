@@ -3,8 +3,6 @@
     include 'datalayer.php'; 
     $conn = connection();
     $list = fetchAllLists($conn);
-    $ascdesc = 'ASC';
-    // $tasks = fetchAllTasks($conn);
 
 ?>
 <div class='mb-5 mt-2'>
@@ -16,22 +14,12 @@
     for ($i=0; $i < count($list); $i++) { 
         $data = $list[$i];
         ?>
-        <div id='list' class='card mt-2 text-white d-inline-flex'>
-            <h5 class='card-header'><?php echo $data['name'] ?></h5>
-            <form method="post">
-                <input type="submit" name="sortTime" value='sortTime'/>
-                <input type="submit" name="sortStatus" value='sortStatus'/>
-            </form>
+        <div id='list' class='card mt-2 text-white d-inline-flex '>
+            <h5 class='card-header'><?php echo $data['name'] ?><a href='list.php?id=<?php echo $data['id'] ?>' class='fas fa-info-circle text-light'></a></h5>
             <div class='card-body'>
                 <ul class='list-group list-group-flush'>
                 <?php
-                echo $data['id'];
-                 if(isset($_POST['sortTime'])){
-                    $taskItem = sortTasksTime($conn, $data['id']);
-
-                }else{
-                    $taskItem = fetchCurrentTasks($conn, $data['id']);
-                }
+                $taskItem = fetchCurrentTasks($conn, $data['id']);
                 foreach ($taskItem as $task) {
                     if ($task['list_id'] == $data['id']) {
                         $status = fetchCurrentStatus($conn, $task);

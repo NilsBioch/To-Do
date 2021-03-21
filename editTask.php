@@ -30,7 +30,9 @@ include 'assets/header.php';
                     <select class='form-control' id="status" name="status">
                         <?php
                             foreach($statuses as $status){
-                                echo"<option value='".$status["id"]."'>".$status['name']."</option>";
+                                ?>
+                                <option value="<?php $status['id'] ?>" <?php if ($task['status_id'] == $status['id']) echo 'selected="selected" '; ?> ><?php echo $status['name'] ?></option>
+                            <?php
                             }
                         ?>
                     </select>

@@ -116,7 +116,7 @@ function fetchCurrentTask($conn, $currentTaskId){
  * @param [number] $currentListId -The id of the current list
  * @return [mixed] -Returns the sorted tasks
  */
-function sortTasksTime($conn, $currentListId, $ascdesc){
+function sortTasksTime($conn, $currentListId){
     $stmt = $conn->prepare("SELECT * FROM task WHERE list_id =:currentListId ORDER BY `task`.`duration` ASC");
     $stmt->execute(array( ':currentListId' => $currentListId ));
     $status = $stmt->fetchAll();
