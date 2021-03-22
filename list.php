@@ -9,8 +9,7 @@
     if(isset($_POST['sortTime'])){
         $taskItem = sortTasksTime($conn, $currentListId);
     }else if(isset($_POST['sortStatus'])){
-        $taskItem = sortStatus($conn, $currentListId);
-        var_dump($_POST);
+        $taskItem = sortStatus($conn, $currentListId, $_POST['status']);
     }
 ?>
 <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
@@ -22,11 +21,9 @@
         <form method="post">
             <input type="submit" name="sortTime" value='sortTime'/>
             <select class='form-control w-50' id="status" name="status">
-					<?php
+                    <?php
 						foreach($statuses as $status){
-                            ?>
-                            <option value="<?php $status['id'] ?>" <?php if ($task['status_id'] == $status['id']) echo 'selected="selected" '; ?> ><?php echo $status['name'] ?></option>
-                        <?php
+							echo"<option value='".$status["id"]."'>".$status['name']."</option>";
 						}
 					?>
       			</select>

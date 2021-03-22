@@ -122,9 +122,9 @@ function sortTasksTime($conn, $currentListId){
     $status = $stmt->fetchAll();
     return $status;
 }
-function sortStatus($conn, $currentListId){
-    $stmt = $conn->prepare("SELECT * FROM `task` WHERE list_id =:currentListId ORDER BY `task`.`status_id` ASC");
-    $stmt->execute(array( ':currentListId' => $currentListId ));
+function sortStatus($conn, $currentListId, $currentStatusId){
+    $stmt = $conn->prepare("SELECT * FROM `task` WHERE status_id =$currentStatusId");
+    $stmt->execute(array( ':currentListId' => $currentListId));
     $status = $stmt->fetchAll();
     return $status;
 }
