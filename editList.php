@@ -1,10 +1,13 @@
 <?php 
 include 'datalayer.php'; 
+include 'validation.php';
 $currentListId = $_GET['id'];
 $conn = connection();
 $list = fetchCurrentList($conn, $currentListId);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    editList($conn, $currentListId, $_POST);
+    $listName = test_input($_POST['name']);
+    editList($conn, $currentListId, $listName);
     header("Location: index.php");
     exit();
 }

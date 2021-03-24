@@ -1,11 +1,16 @@
 <?php 
 include 'datalayer.php'; 
+include 'validation.php';
 $currentTaskId = $_GET['id'];
 $conn = connection();
 $statuses = fetchAllStatus($conn);
 $task = fetchCurrentTask($conn, $currentTaskId);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    editTask($conn, $currentTaskId, $_POST);
+    $data['name']           = test_input($_POST['name']);
+    $data['description']    = test_input($_POST['description']);
+	$data['status']         = test_input($_POST['status']);
+    $data['duration']       = test_input($_POST['duration']);
+    editTask($conn, $currentTaskId, $data);
     header("Location: index.php");
     exit();
 }
@@ -31,7 +36,7 @@ include 'assets/header.php';
                         <?php
                             foreach($statuses as $status){
                                 ?>
-                                <option value="<?php $status['id'] ?>" <?php if ($task['status_id'] == $status['id']) echo 'selected="selected" '; ?> ><?php echo $status['name'] ?></option>
+                                <option value="<?php echo $status['id'] ?>" <?php if ($task['status_id'] == $status['id']) echo 'selected="selected" '; ?> ><?php echo $status['name'] ?></option>
                             <?php
                             }
                         ?>

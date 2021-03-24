@@ -1,33 +1,42 @@
 <?php 
-    include 'assets/header.php';
     include 'datalayer.php'; 
     $currentListId = $_GET['id'];
     $conn = connection();
     $list = fetchCurrentList($conn, $currentListId);
     $taskItem = fetchCurrentTasks($conn, $currentListId);
     $statuses = fetchAllStatus($conn);
+    
     if(isset($_POST['sortTime'])){
-        $taskItem = sortTasksTime($conn, $currentListId);
+        $taskItem = sortTasksTime($conn, $currentListId, $_POST['sortTimeSetting']);
     }else if(isset($_POST['sortStatus'])){
-        $taskItem = sortStatus($conn, $currentListId, $_POST['status']);
+        $taskItem = sortStatus($conn, $_POST['status']);
     }
+    include 'assets/header.php';
 ?>
 <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>
-        <h1 class='text-white mx-auto'>Bekijk hier List</h1>
+        <h1 class='text-white mx-auto'>Bekijk hier List <?php echo $list['name'] ?></h1>
         <a class='align-self-center' href='index.php'><i class='fas fa-arrow-circle-left fa-3x justify-content-between'></i></a>
 </div>
 <div id='list' class='card mt-2 w-50 mb-3 mx-auto text-white'>
     <h5 class='card-header'><?php echo $list['name'] ?></h5>
         <form method="post">
-            <input type="submit" name="sortTime" value='sortTime'/>
-            <select class='form-control w-50' id="status" name="status">
+            <div class="d-flex">
+                <input type="submit" class="btn btn-primary text-white mr-auto p-2" name="sortTime" value='sortTime'/>
+                <input type="submit" class="btn btn-primary text-white p-2" name="sortStatus" value="Filter Status">
+            </div>
+            <div class="d-flex justify-content-center">
+                <select class='form-control' id="sortTimeSetting" name="sortTimeSetting">
+                    <option value="ASC">Sort tijd van Laag naar Hoog </option>
+                    <option value="DESC">Sort tijd van Hoog naar Laag</option>
+                </select>
+                <select class='form-control' id="status" name="status">
                     <?php
-						foreach($statuses as $status){
-							echo"<option value='".$status["id"]."'>".$status['name']."</option>";
-						}
-					?>
-      			</select>
-                  <input type="submit" name="sortStatus" value="Filter Status">
+                        foreach($statuses as $status){
+                            echo"<option value='".$status["id"]."'>".$status['name']."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
         </form>
         <div class='card-body'>
             <ul class='list-group list-group-flush'>

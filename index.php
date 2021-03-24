@@ -1,9 +1,10 @@
 <?php 
-    include 'assets/header.php';
     include 'datalayer.php'; 
+
     $conn = connection();
     $list = fetchAllLists($conn);
 
+    include 'assets/header.php';
 ?>
 <div class='mb-5 mt-2'>
     <div class='d-lg-flex flex-lg-row flex-sm-column justify-content-between'>

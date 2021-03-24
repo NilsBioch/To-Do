@@ -18,7 +18,7 @@ body{
     background: rgba(20, 27, 46, 0.9);
 }
 #list-item{
-    background: rgba(15, 20, 34, 0.575); 
+    background: rgba(25, 34, 59, 0.575); 
     max-width: 20em;
 }
 #list-item-list{
@@ -34,4 +34,5 @@ float: right;
     margin-right:0.5em;
 
 }
+
 
